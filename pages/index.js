@@ -140,7 +140,7 @@ export default function Home() {
               data={sampleRooms}
               columns={[
                 { id: 'name', name: 'Room Name' },
-                { id: 'id', name: 'Click ID To Join', formatter: (cell) => _(<a className="underline" href={`/${cell}`} >{cell}</a>) }
+                { id: 'id', name: 'Click ID To Join', formatter: (cell) => _(<a className="underline" href="#" >{cell}</a>) }
               ]}
               search={
                 {

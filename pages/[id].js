@@ -305,6 +305,7 @@ export default function Room() {
                                         <Button onClick={() => handleExitSeat(location)} disabled={!locked} variant="outline">Exit Seat</Button>
                                     </div>
                                 </div>}
+                            <div>Share:</div>
                             <QRCode value={`${window.location.href}`} />
                         </div>
                         <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
