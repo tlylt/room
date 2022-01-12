@@ -96,7 +96,7 @@ export default function Room() {
     }
     const handleExitSeat = ({ row, col }) => {
         mutate(`/api/rooms/room?id=${id}`, { ...data, occupied: [...data.occupied.filter(occupied => !(occupied.row === row && occupied.col === col))] }, false)
-        fetch(`http://localhost:3000/api/rooms/room?id=${id}`, {
+        fetch(`/api/rooms/room?id=${id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -173,20 +173,20 @@ export default function Room() {
                 </Head>
                 <header className="text-gray-600 body-font">
                     <div className="container flex flex-col flex-wrap items-center p-5 mx-auto md:flex-row">
-                        <nav class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto">
-                            <div class="mr-5 hover:text-gray-900">ID: Hello</div>
-                            <div class="mr-5 hover:text-gray-900">|</div>
-                            <div class="mr-5 hover:text-gray-900">Name: World</div>
+                        <nav className="flex flex-wrap items-center text-base lg:w-2/5 md:ml-auto">
+                            <div className="mr-5 hover:text-gray-900">ID: Hello</div>
+                            <div className="mr-5 hover:text-gray-900">|</div>
+                            <div className="mr-5 hover:text-gray-900">Name: World</div>
                         </nav>
                         <div className="flex items-center order-first mb-4 font-medium text-gray-900 lg:order-none lg:w-1/5 title-font lg:items-center lg:justify-center md:mb-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
                             <span className="ml-3 text-xl">The Room</span>
                         </div>
-                        <div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
-                            <a href="/" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Back
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                        <div className="inline-flex ml-5 lg:w-2/5 lg:justify-end lg:ml-0">
+                            <a href="/" className="inline-flex items-center px-3 py-1 mt-4 text-base bg-gray-100 border-0 rounded focus:outline-none hover:bg-gray-200 md:mt-0">Back
+                                <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
                                     <path d="M5 12h14M12 5l7 7-7 7"></path>
                                 </svg>
                             </a>
@@ -266,20 +266,20 @@ export default function Room() {
             </Head>
             <header className="text-gray-600 body-font">
                 <div className="container flex flex-col flex-wrap items-center p-5 mx-auto md:flex-row">
-                    <nav class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto">
-                        <div class="mr-5 hover:text-gray-900">ID: {data && data.id}</div>
-                        <div class="mr-5 hover:text-gray-900">|</div>
-                        <div class="mr-5 hover:text-gray-900">Name: {data && data.name}</div>
+                    <nav className="flex flex-wrap items-center text-base lg:w-2/5 md:ml-auto">
+                        <div className="mr-5 hover:text-gray-900">ID: {data && data.id}</div>
+                        <div className="mr-5 hover:text-gray-900">|</div>
+                        <div className="mr-5 hover:text-gray-900">Name: {data && data.name}</div>
                     </nav>
                     <div className="flex items-center order-first mb-4 font-medium text-gray-900 lg:order-none lg:w-1/5 title-font lg:items-center lg:justify-center md:mb-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                         <span className="ml-3 text-xl">The Room</span>
                     </div>
-                    <div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
-                        <a href="/" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Back
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                    <div className="inline-flex ml-5 lg:w-2/5 lg:justify-end lg:ml-0">
+                        <a href="/" className="inline-flex items-center px-3 py-1 mt-4 text-base bg-gray-100 border-0 rounded focus:outline-none hover:bg-gray-200 md:mt-0">Back
+                            <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
                                 <path d="M5 12h14M12 5l7 7-7 7"></path>
                             </svg>
                         </a>

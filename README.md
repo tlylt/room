@@ -15,6 +15,11 @@ When teaching a class of over 20 students, it may not be easy to learn their nam
 - One can "raise hand" to seek attention from the room admin
 - etc
 
+## Demo
+![gif](public/demo1.gif)
+![gif](public/demo2.gif)
+
+
 ## Screenshots
 <p align="center">
   <img width="700" src="public/demo0.png" alt="demo0"/>
