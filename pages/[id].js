@@ -4,7 +4,7 @@ import {
     Input
 } from '@chakra-ui/react'
 import { Skeleton } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import useSWR, { useSWRConfig } from 'swr'
@@ -12,7 +12,6 @@ import { useToast } from '@chakra-ui/react'
 import Footer from '../components/Footer'
 import FloorPlan from '../components/FloorPlan'
 import QRCode from 'qrcode.react'
-
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 

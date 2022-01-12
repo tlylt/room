@@ -55,6 +55,78 @@ const sampleRooms = [
       row: 5,
       col: 5,
     }
+  },
+  {
+    id: 'hello',
+    name: 'Loading...',
+    password: 'password',
+    row: 10,
+    col: 10,
+    occupied: [],
+    gap: {
+      row: 5,
+      col: 5,
+    }
+  },
+  {
+    id: 'world',
+    name: 'Loading...',
+    password: 'password',
+    row: 10,
+    col: 10,
+    occupied: [],
+    gap: {
+      row: 5,
+      col: 5,
+    }
+  },
+  {
+    id: 'hello',
+    name: 'Loading...',
+    password: 'password',
+    row: 10,
+    col: 10,
+    occupied: [],
+    gap: {
+      row: 5,
+      col: 5,
+    }
+  },
+  {
+    id: 'world',
+    name: 'Loading...',
+    password: 'password',
+    row: 10,
+    col: 10,
+    occupied: [],
+    gap: {
+      row: 5,
+      col: 5,
+    }
+  },
+  {
+    id: 'hello',
+    name: 'Loading...',
+    password: 'password',
+    row: 10,
+    col: 10,
+    occupied: [],
+    gap: {
+      row: 5,
+      col: 5,
+    }
+  },
+  {
+    id: 'world',
+    name: 'Loading...',
+    password: 'password',
+    row: 10,
+    col: 10,
+    occupied: [],
+    gap: {
+      row: 5,
+      col: 5,
+    }
   }
 ]
 export default function Home() {
@@ -117,6 +189,15 @@ export default function Home() {
     }
   }
 
+  const handleRefresh = async () => {
+    toast({
+      title: `Fetched latest data`,
+      status: 'success',
+      position: 'top',
+      isClosable: true,
+    })
+    mutate(`/api/rooms`)
+  }
   if (error) return <div>failed to load</div>
   if (!data) {
     return (<>
@@ -156,7 +237,7 @@ export default function Home() {
               sort={true}
             />
           </div>
-          <div className="flex flex-col flex-wrap -mb-10 text-center lg:py-6 lg:w-1/2 lg:pl-12 lg:text-left">
+          <div className="flex flex-col flex-wrap -mb-10 text-center lg:py-16 lg:w-1/2 lg:pl-12 lg:text-left">
             <div className="flex flex-col items-center mb-10 lg:items-start">
               <div className="inline-flex items-center justify-center w-12 h-12 mb-5 bg-blue-200 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -166,6 +247,7 @@ export default function Home() {
               <div className="flex-grow">
                 <h2 className="mb-3 text-lg font-medium text-gray-900 title-font">Join a room</h2>
                 <p className="text-base leading-relaxed">Browse the list of available rooms and click to join</p>
+                <div className="inline-flex items-center pt-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Button variant="outline">Refresh</Button></div>
               </div>
             </div>
             <div className="flex flex-col items-center mb-10 lg:items-start">
@@ -178,17 +260,17 @@ export default function Home() {
                 <h2 className="mb-3 text-lg font-medium text-gray-900 title-font">Create a room</h2>
                 <Input placeholder='Room Name'
                   value={roomName}
-                  onChange={handleNameChange}
+                  onChange={() => { }}
                   width="50"
                 />
                 <Input
                   value={roomPassword}
-                  onChange={handlePasswordChange}
+                  onChange={() => { }}
                   width="50"
                   placeholder='Room Password'
                 />
-                <p className="text-sm leading-relaxed">*password is required in the room when you want to perform admin actions</p>
-                <div className="inline-flex items-center mt-3 text-indigo-500"><Button variant="outline" onClick={handleClick}>GO</Button>
+                <p className="text-sm leading-relaxed">*password is required to perform room admin actions</p>
+                <div className="inline-flex items-center mt-2 text-blue-500"><Button variant="outline" >GO</Button>
                 </div>
               </div>
             </div>
@@ -231,12 +313,12 @@ export default function Home() {
               }
               pagination={{
                 enabled: true,
-                limit: 10,
+                limit: 8,
               }}
               sort={true}
             />
           </div>
-          <div className="flex flex-col flex-wrap -mb-10 text-center lg:py-6 lg:w-1/2 lg:pl-12 lg:text-left">
+          <div className="flex flex-col flex-wrap -mb-10 text-center lg:py-16 lg:w-1/2 lg:pl-12 lg:text-left">
             <div className="flex flex-col items-center mb-10 lg:items-start">
               <div className="inline-flex items-center justify-center w-12 h-12 mb-5 bg-blue-200 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -246,6 +328,7 @@ export default function Home() {
               <div className="flex-grow">
                 <h2 className="mb-3 text-lg font-medium text-gray-900 title-font">Join a room</h2>
                 <p className="text-base leading-relaxed">Browse the list of available rooms and click to join</p>
+                <div className="inline-flex items-center pt-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Button onClick={handleRefresh} variant="outline">Refresh</Button></div>
               </div>
             </div>
             <div className="flex flex-col items-center mb-10 lg:items-start">
@@ -270,8 +353,8 @@ export default function Home() {
                   placeholder='Room Password'
                   required
                 />
-                <p className="text-sm leading-relaxed">*password is required in the room when you want to perform admin actions</p>
-                <div className="inline-flex items-center mt-3 text-indigo-500"><Button variant="outline" onClick={handleClick}>GO</Button>
+                <p className="text-sm leading-relaxed">*password is required to perform room admin actions</p>
+                <div className="inline-flex items-center mt-2 text-indigo-500"><Button variant="outline" onClick={handleClick}>GO</Button>
                 </div>
               </div>
             </div>
