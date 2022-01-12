@@ -150,7 +150,7 @@ export default function Home() {
               }
               pagination={{
                 enabled: true,
-                limit: 10,
+                limit: 8,
               }}
               sort={true}
             />
