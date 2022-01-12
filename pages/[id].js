@@ -162,7 +162,7 @@ export default function Room() {
             })
             return
         }
-        mutate(`/api/rooms/room?id=${id}`, { ...data, occupied: [] }, false)
+
         let res = await fetch(`/api/rooms`, {
             method: "POST",
             headers: {
@@ -182,6 +182,14 @@ export default function Room() {
             toast({
                 title: `Room cleared`,
                 status: 'success',
+                position: 'top',
+                isClosable: true,
+            })
+            mutate(`/api/rooms/room?id=${id}`, { ...data, occupied: [] }, false)
+        } else {
+            toast({
+                title: `Wrong password`,
+                status: 'error',
                 position: 'top',
                 isClosable: true,
             })
@@ -223,6 +231,13 @@ export default function Room() {
             setTimeout(() => {
                 router.push('/')
             }, 3000)
+        } else {
+            toast({
+                title: `Wrong password`,
+                status: 'error',
+                position: 'top',
+                isClosable: true,
+            })
         }
     }
 

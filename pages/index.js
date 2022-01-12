@@ -108,6 +108,7 @@ export default function Home() {
         title: `Room created`,
         status: 'success',
         position: 'top',
+        duration: 1000,
         isClosable: true,
       })
       setTimeout(() => {
