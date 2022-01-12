@@ -19,7 +19,6 @@ export default async function userHandler(req, res) {
                     res.status(200).json({ status: "success" })
                     break
                 case 'remove':
-                    console.log({ row: req.body.location.row, col: req.body.location.col })
                     db.collection('rooms').updateOne({ id: req.query.id },
                         { $pull: { occupied: { row: req.body.location.row, col: req.body.location.col } } })
                     res.status(200).json({ status: "success" })
