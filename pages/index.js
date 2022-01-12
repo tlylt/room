@@ -2,34 +2,13 @@ import Head from 'next/head'
 import { useState } from 'react';
 import { Grid, _ } from 'gridjs-react';
 import "gridjs/dist/theme/mermaid.css";
-import { Input, InputGroup, InputRightElement, Button } from '@chakra-ui/react'
+import { Input, Button } from '@chakra-ui/react'
 import useSWR, { useSWRConfig } from 'swr'
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid'
 import { useToast } from '@chakra-ui/react'
 import Footer from '../components/Footer';
-function PasswordInput(
-  { roomPassword, handlePasswordChange }
-) {
-  const [show, setShow] = useState(false)
-  const handleClick = () => setShow(!show)
-  return (
-    <InputGroup size='md' >
-      <Input
-        pr='4.5rem'
-        type={show ? 'text' : 'password'}
-        value={roomPassword}
-        onChange={handlePasswordChange}
-        placeholder='Enter password'
-      />
-      <InputRightElement width='4.5rem'>
-        <Button h='1.75rem' size='sm' onClick={handleClick}>
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </InputRightElement>
-    </InputGroup>
-  )
-}
+import { getReadableDate } from '../utils';
 
 const sampleRooms = [
   {
@@ -42,7 +21,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   },
   {
     id: 'world',
@@ -54,7 +34,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   },
   {
     id: 'hello',
@@ -66,7 +47,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   },
   {
     id: 'world',
@@ -78,7 +60,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   },
   {
     id: 'hello',
@@ -90,7 +73,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   },
   {
     id: 'world',
@@ -102,7 +86,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   },
   {
     id: 'hello',
@@ -114,7 +99,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   },
   {
     id: 'world',
@@ -126,7 +112,8 @@ const sampleRooms = [
     gap: {
       row: 5,
       col: 5,
-    }
+    },
+    creationTime: 'January 1'
   }
 ]
 export default function Home() {
@@ -222,7 +209,8 @@ export default function Home() {
               data={sampleRooms}
               columns={[
                 { id: 'name', name: 'Room Name' },
-                { id: 'id', name: 'Click ID To Join', formatter: (cell) => _(<a className="underline" href="#" >{cell}</a>) }
+                { id: 'id', name: 'Click ID To Join', formatter: (cell) => _(<a className="underline" href="#" >{cell}</a>) },
+                { id: 'creationTime', name: 'Created' },
               ]}
               search={
                 {
@@ -303,7 +291,8 @@ export default function Home() {
               data={data}
               columns={[
                 { id: 'name', name: 'Room Name' },
-                { id: 'id', name: 'Click ID To Join', formatter: (cell) => _(<a className="underline" href={`/${cell}`} >{cell}</a>) }
+                { id: 'id', name: 'Click ID To Join', formatter: (cell) => _(<a className="underline" href={`/${cell}`} >{cell}</a>) },
+                { id: 'creationTime', name: 'Created', formatter: (cell) => getReadableDate(cell) },
               ]}
               search={
                 {

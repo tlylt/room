@@ -13,12 +13,6 @@ const defaultRoom = {
     }
 }
 
-const defaultUser = {
-    name: 'guy1',
-    row: -1,
-    col: -1
-}
-
 export default async (req, res) => {
     const client = await clientPromise
     const db = client.db("the_room");
@@ -26,7 +20,7 @@ export default async (req, res) => {
         case 'GET':
             const rooms = await db
                 .collection("rooms")
-                .find({}, { projection: { id: 1, name: 1 } })
+                .find({}, { projection: { id: 1, name: 1, _id: 0, creationTime: { "$convert": { "input": "$_id", "to": "date" } } } })
                 .limit(50)
                 .toArray();
             res.status(200).json(rooms);
