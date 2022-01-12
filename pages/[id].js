@@ -11,7 +11,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { useToast } from '@chakra-ui/react'
 import Footer from '../components/Footer'
 import FloorPlan from '../components/FloorPlan'
-
+import QRCode from 'qrcode.react'
 
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
@@ -305,7 +305,7 @@ export default function Room() {
                                         <Button onClick={() => handleExitSeat(location)} disabled={!locked} variant="outline">Exit Seat</Button>
                                     </div>
                                 </div>}
-
+                            <QRCode value={`${window.location.href}`} />
                         </div>
                         <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
                             <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Room Admin(s)</h2>
