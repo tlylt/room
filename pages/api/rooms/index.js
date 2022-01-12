@@ -1,5 +1,4 @@
 import clientPromise from '../../../lib/mongodb'
-import { nanoid } from 'nanoid'
 import bcrypt from 'bcryptjs'
 const defaultRoom = {
     id: 123,
@@ -27,15 +26,10 @@ export default async (req, res) => {
         case 'GET':
             const rooms = await db
                 .collection("rooms")
-                .find({}, { projection: { _id: 0 } })
-                .sort({ metacritic: -1 })
-                .limit(20)
+                .find({}, { projection: { id: 1, name: 1 } })
+                .limit(50)
                 .toArray();
-            const result = rooms.map((room) => {
-                delete room.password
-                return room
-            })
-            res.status(200).json(result);
+            res.status(200).json(rooms);
             break
         case 'POST':
             switch (req.body.operation) {
@@ -43,10 +37,9 @@ export default async (req, res) => {
                     const room = req.body.room
                     const salt = bcrypt.genSaltSync(10);
                     const hash = bcrypt.hashSync(room.password, salt);
-                    const id = nanoid(10)
-                    const newRoom = { ...defaultRoom, password: hash, id: id, name: room.name }
+                    const newRoom = { ...defaultRoom, password: hash, id: room.id, name: room.name }
                     await db.collection('rooms').insertOne(newRoom);
-                    res.status(200).json({ status: 'success', id: id });
+                    res.status(200).json({ status: 'success', id: room.id });
                     break
                 case 'clear':
                     const roomPw = await db.collection('rooms').findOne({ id: req.body.id }, { projection: { password: 1 } })

@@ -1,5 +1,5 @@
 import { getAllRoomIds, getRoomData } from '../lib/rooms'
-import { Avatar, AvatarBadge, AvatarGroup, Stack } from '@chakra-ui/react'
+import { Avatar, AvatarBadge, AvatarGroup, Box, Stack } from '@chakra-ui/react'
 import { Tooltip } from '@chakra-ui/react'
 import {
     Popover,
@@ -14,7 +14,7 @@ import {
     Button,
     Input
 } from '@chakra-ui/react'
-import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { Skeleton } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -58,7 +58,7 @@ const defaultGrid = () => {
     return initialGrid
 }
 
-export default function Post() {
+export default function Room() {
     const { mutate } = useSWRConfig()
     const router = useRouter()
     const { id } = router.query
@@ -164,6 +164,100 @@ export default function Post() {
     }, [data])
 
     const [grid, setGridData] = useState(defaultGrid())
+    if (!data || error) {
+        return (
+            <>
+                <Head>
+                    <title>The Room</title>
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <header className="text-gray-600 body-font">
+                    <div className="container flex flex-col flex-wrap items-center p-5 mx-auto md:flex-row">
+                        <nav class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto">
+                            <div class="mr-5 hover:text-gray-900">ID: Hello</div>
+                            <div class="mr-5 hover:text-gray-900">|</div>
+                            <div class="mr-5 hover:text-gray-900">Name: World</div>
+                        </nav>
+                        <div className="flex items-center order-first mb-4 font-medium text-gray-900 lg:order-none lg:w-1/5 title-font lg:items-center lg:justify-center md:mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            <span className="ml-3 text-xl">The Room</span>
+                        </div>
+                        <div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
+                            <a href="/" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Back
+                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </header>
+                <section className="text-gray-600">
+                    <div className="container px-5 py-4 mx-auto">
+                        <div className="flex flex-col w-full mb-10 text-center">
+                            <p className="w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300">Front</p>
+                        </div>
+                        <div className="flex justify-center mb-10">
+                            <div className="py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
+                                <Box className="w-96">
+                                    <Skeleton height='200px' />
+                                    <Skeleton height='200px' />
+                                    <Skeleton height='225px' />
+                                </Box>
+                            </div>
+                        </div>
+                        <div className="flex flex-col w-full mb-20 text-center">
+                            <p className="w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300">Back</p>
+                        </div>
+                        <div className="flex flex-wrap">
+                            <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
+                                <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Settings</h2>
+                                <Input placeholder='My Name'
+                                    value={name}
+                                    onChange={handleNameChange}
+                                    disabled={locked}
+                                />
+                            </div>
+                            <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
+                                <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Actions</h2>
+                                {location.row === -1 && location.col === -1 ? <div className="mb-4 text-base leading-relaxed">Go sit down!</div> :
+                                    <div className="mb-4 text-base leading-relaxed">
+                                        <div>Sitting at: </div>
+                                        <div>Row: {location.row + 1}</div>
+                                        <div>Column: {location.col + 1}</div>
+                                        <div className="text-blue-500">
+                                            <Button onClick={() => handleExitSeat(location)} disabled={!locked} variant="outline">Exit Seat</Button>
+                                        </div>
+                                    </div>}
+                            </div>
+                            <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
+                                <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Room Admin(s)</h2>
+                                <p className="mb-4 text-base leading-relaxed">Fill in the room password before executing the following actions</p>
+                                <Input placeholder='Room Password'
+                                    value={password}
+                                    onChange={handlePasswordChange}
+                                />
+                                <div className="inline-flex items-center text-blue-500">
+                                    <Button onClick={handleClearSeat} variant="outline">Clear all seats</Button>
+                                </div>
+                                <div className="inline-flex items-center text-blue-500">
+                                    <Button onClick={handleDeleteRoom} variant="outline">Delete Room</Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <footer className="text-gray-600 body-font">
+                    <div className="container flex flex-col items-center px-5 py-8 mx-auto sm:flex-row">
+                        <p className="mt-4 text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0">© 2022  —
+                            <a href="https://yongliangliu.com" className="ml-1 text-gray-600" rel="noopener noreferrer" target="_blank">@tlylt</a>
+                        </p>
+                    </div>
+                </footer>
+            </>
+        )
+    }
     return (
         <>
             <Head>
@@ -171,13 +265,13 @@ export default function Post() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <header className="text-gray-600 body-font">
-                <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+                <div className="container flex flex-col flex-wrap items-center p-5 mx-auto md:flex-row">
                     <nav class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto">
                         <div class="mr-5 hover:text-gray-900">ID: {data && data.id}</div>
                         <div class="mr-5 hover:text-gray-900">|</div>
                         <div class="mr-5 hover:text-gray-900">Name: {data && data.name}</div>
                     </nav>
-                    <div className="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0">
+                    <div className="flex items-center order-first mb-4 font-medium text-gray-900 lg:order-none lg:w-1/5 title-font lg:items-center lg:justify-center md:mb-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
@@ -194,12 +288,12 @@ export default function Post() {
             </header>
             <section className="text-gray-600">
                 <div className="container px-5 py-4 mx-auto">
-                    <div className="flex flex-col text-center w-full mb-10">
-                        <p className="w-2/3 mx-auto leading-relaxed text-base bg-slate-300 text-gray-900">Front</p>
+                    <div className="flex flex-col w-full mb-10 text-center">
+                        <p className="w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300">Front</p>
                     </div>
                     <div className="flex justify-center mb-10">
-                        <div className="mb-10 lg:mb-0 rounded-lg overflow-x-auto py-2">
-                            <div className="grid lg:gap-4 gap-2">
+                        <div className="py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
+                            <div className="grid gap-2 lg:gap-4">
                                 {grid && data ? grid.map((row, rowIdx) => {
                                     return <AvatarGroup spacing='1rem' key={"row" + rowIdx}>
                                         {row.map((col, colIdx) => {
@@ -236,22 +330,22 @@ export default function Post() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col text-center w-full mb-20">
-                        <p className="w-2/3 mx-auto leading-relaxed text-base bg-slate-300 text-gray-900">Back</p>
+                    <div className="flex flex-col w-full mb-20 text-center">
+                        <p className="w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300">Back</p>
                     </div>
                     <div className="flex flex-wrap">
-                        <div className="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60">
-                            <h2 className="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">Settings</h2>
-                            <Input placeholder='My Name'
+                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
+                            <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Settings</h2>
+                            <Input placeholder='Enter Name'
                                 value={name}
                                 onChange={handleNameChange}
                                 disabled={locked}
                             />
                         </div>
-                        <div className="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60">
-                            <h2 className="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">Actions</h2>
-                            {location.row === -1 && location.col === -1 ? <div className="leading-relaxed text-base mb-4">Go sit down!</div> :
-                                <div className="leading-relaxed text-base mb-4">
+                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
+                            <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Actions</h2>
+                            {location.row === -1 && location.col === -1 ? <div className="mb-4 text-base leading-relaxed">Go sit down!</div> :
+                                <div className="mb-4 text-base leading-relaxed">
                                     <div>Sitting at: </div>
                                     <div>Row: {location.row + 1}</div>
                                     <div>Column: {location.col + 1}</div>
@@ -260,17 +354,17 @@ export default function Post() {
                                     </div>
                                 </div>}
                         </div>
-                        <div className="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60">
-                            <h2 className="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">Room Admin(s)</h2>
-                            <p className="leading-relaxed text-base mb-4">Fill in the room password before executing the following actions</p>
+                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
+                            <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Room Admin(s)</h2>
+                            <p className="mb-4 text-base leading-relaxed">Fill in the room password before executing the following actions</p>
                             <Input placeholder='Room Password'
                                 value={password}
                                 onChange={handlePasswordChange}
                             />
-                            <div className="text-blue-500 inline-flex items-center">
+                            <div className="inline-flex items-center text-blue-500">
                                 <Button onClick={handleClearSeat} variant="outline">Clear all seats</Button>
                             </div>
-                            <div className="text-blue-500 inline-flex items-center">
+                            <div className="inline-flex items-center text-blue-500">
                                 <Button onClick={handleDeleteRoom} variant="outline">Delete Room</Button>
                             </div>
                         </div>
@@ -278,11 +372,13 @@ export default function Post() {
 
                 </div>
             </section>
-            <main className="justify-center container mx-auto">
-                <div className="flex gap-10">
-
+            <footer className="text-gray-600 body-font">
+                <div className="container flex flex-col items-center px-5 py-8 mx-auto sm:flex-row">
+                    <p className="mt-4 text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0">© 2022  —
+                        <a href="https://yongliangliu.com" className="ml-1 text-gray-600" rel="noopener noreferrer" target="_blank">@tlylt</a>
+                    </p>
                 </div>
-            </main>
+            </footer>
         </>
     )
 }

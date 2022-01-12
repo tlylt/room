@@ -11,11 +11,10 @@ export default async function userHandler(req, res) {
             res.status(200).json(room)
             break
         case 'POST':
-            // Update the room data in your database
             switch (req.body.operation) {
                 case 'add':
                     db.collection('rooms').updateOne({ id: req.query.id },
-                        { $addToSet: { occupied: { name: req.body.user.name, row: req.body.location.row, col: req.body.location.col, admin: true } } },
+                        { $addToSet: { occupied: { name: req.body.user.name, row: req.body.location.row, col: req.body.location.col } } },
                         { upsert: true })
                     res.status(200).json({ status: "success" })
                     break
