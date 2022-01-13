@@ -10,6 +10,7 @@ import { useToast } from '@chakra-ui/react'
 import Footer from '../components/Footer';
 import { getReadableDate } from '../utils';
 import { SAMPLE_ROOMS } from '../utils/constants';
+import { Spinner } from '@chakra-ui/react'
 
 export default function Home() {
   const toast = useToast()
@@ -129,7 +130,7 @@ export default function Home() {
               <div className="flex-grow">
                 <h2 className="mb-3 text-lg font-medium text-gray-900 title-font">Join a room</h2>
                 <p className="text-base leading-relaxed">Browse the list of available rooms and click to join</p>
-                <div className="inline-flex items-center pt-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Button variant="outline">Refresh</Button></div>
+                <div className="inline-flex items-center pt-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Spinner /></div>
               </div>
             </div>
             <div className="flex flex-col items-center mb-10 lg:items-start">
