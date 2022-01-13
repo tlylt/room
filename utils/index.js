@@ -5,7 +5,7 @@ export const getCurrentDateTime = () => {
 export const getReadableDate = (raw) => {
     const date = new Date(raw).toLocaleString('en-US', {
         day: 'numeric',
-        month: 'long',
+        month: 'short',
         hour: 'numeric',
         // year: 'numeric',
     })
