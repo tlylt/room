@@ -9,113 +9,8 @@ import { nanoid } from 'nanoid'
 import { useToast } from '@chakra-ui/react'
 import Footer from '../components/Footer';
 import { getReadableDate } from '../utils';
+import { SAMPLE_ROOMS } from '../utils/constants';
 
-const sampleRooms = [
-  {
-    id: 'hello',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  },
-  {
-    id: 'world',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  },
-  {
-    id: 'hello',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  },
-  {
-    id: 'world',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  },
-  {
-    id: 'hello',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  },
-  {
-    id: 'world',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  },
-  {
-    id: 'hello',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  },
-  {
-    id: 'world',
-    name: 'Loading...',
-    password: 'password',
-    row: 10,
-    col: 10,
-    occupied: [],
-    gap: {
-      row: 5,
-      col: 5,
-    },
-    creationTime: 'January 1'
-  }
-]
 export default function Home() {
   const toast = useToast()
   const { mutate } = useSWRConfig()
@@ -146,7 +41,6 @@ export default function Home() {
       return
     }
     const id = nanoid(10)
-    mutate('/api/rooms', [...data, { id: id, name: roomName }, false])
     let res = await fetch(`/api/rooms`, {
       method: "POST",
       headers: {
@@ -206,7 +100,7 @@ export default function Home() {
         <div className="container flex flex-wrap px-5 py-24 mx-auto">
           <div className="w-full mb-10 overflow-hidden rounded-lg lg:w-1/2 lg:mb-0">
             <Grid
-              data={sampleRooms}
+              data={SAMPLE_ROOMS}
               columns={[
                 { id: 'name', name: 'Room Name' },
                 { id: 'id', name: 'Click ID To Join', formatter: (cell) => _(<a className="underline" href="#" >{cell}</a>) },
@@ -229,7 +123,7 @@ export default function Home() {
             <div className="flex flex-col items-center mb-10 lg:items-start">
               <div className="inline-flex items-center justify-center w-12 h-12 mb-5 bg-blue-200 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
               </div>
               <div className="flex-grow">
@@ -241,7 +135,7 @@ export default function Home() {
             <div className="flex flex-col items-center mb-10 lg:items-start">
               <div className="inline-flex items-center justify-center w-12 h-12 mb-5 bg-blue-200 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
               </div>
               <div className="flex-grow">
@@ -311,7 +205,7 @@ export default function Home() {
             <div className="flex flex-col items-center mb-10 lg:items-start">
               <div className="inline-flex items-center justify-center w-12 h-12 mb-5 bg-blue-200 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
               </div>
               <div className="flex-grow">
@@ -323,7 +217,7 @@ export default function Home() {
             <div className="flex flex-col items-center mb-10 lg:items-start">
               <div className="inline-flex items-center justify-center w-12 h-12 mb-5 bg-blue-200 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
               </div>
               <div className="flex-grow">

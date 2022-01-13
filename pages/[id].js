@@ -1,4 +1,4 @@
-import { Avatar, AvatarBadge, AvatarGroup, Box, Stack } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import {
     Button,
     Input
@@ -222,14 +222,14 @@ export default function Room() {
             toast({
                 title: `Room deleted & back to home page`,
                 status: 'success',
-                duration: 3000,
+                duration: 2000,
                 position: 'top',
                 isClosable: true,
             })
             // pause a moment before redirecting to homepage
             setTimeout(() => {
                 router.push('/')
-            }, 3000)
+            }, 2000)
         } else {
             toast({
                 title: `Wrong password`,

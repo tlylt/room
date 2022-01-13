@@ -6,6 +6,7 @@ export const getReadableDate = (raw) => {
     const date = new Date(raw).toLocaleString('en-US', {
         day: 'numeric',
         month: 'long',
+        hour: 'numeric',
         // year: 'numeric',
     })
     return date
