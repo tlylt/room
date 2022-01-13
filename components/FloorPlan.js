@@ -43,7 +43,14 @@ function makeGrid(row, col, occupied) {
 }
 
 const initialGrid = defaultGrid()
-export default function FloorPlan({ data, gap, handleClick, name, locked }) {
+export default function FloorPlan({ data, gap, handleClick, name, locked, location }) {
+    const getBg = (row, col) => {
+        if (location.row === row && location.col === col) {
+            return 'teal.300'
+        } else {
+            return 'teal'
+        }
+    }
     const [grid, setGridData] = useState(initialGrid)
     useEffect(() => {
         if (data) {
@@ -59,7 +66,7 @@ export default function FloorPlan({ data, gap, handleClick, name, locked }) {
                             <div className={`${colIdx === gap.col ? 'pl-10' : ''}`}>
                                 {col.occupied ?
                                     <Tooltip label={col.name} hasArrow placement='auto'>
-                                        <Avatar textColor={'white'} name={col.name ? col.name : rowIdx + ' ' + colIdx} bg={col.occupied ? 'teal' : 'gray'} >
+                                        <Avatar textColor={'white'} name={col.name ? col.name : rowIdx + ' ' + colIdx} bg={getBg(rowIdx, colIdx)} >
                                             <AvatarBadge boxSize='1.25em' bg='green.500' />
                                         </Avatar>
                                     </Tooltip> : <Avatar />}
@@ -68,7 +75,7 @@ export default function FloorPlan({ data, gap, handleClick, name, locked }) {
                         <PopoverContent>
                             <PopoverArrow />
                             <PopoverCloseButton />
-                            <PopoverHeader>Row-{rowIdx + 1} Col-{colIdx + 1}</PopoverHeader>
+                            <PopoverHeader>Row {rowIdx + 1} Column {colIdx + 1}</PopoverHeader>
                             <PopoverBody>
                                 <div>{col.name ? `Occupant: ${col.name}` : ''}</div>
                                 {col.occupied ? undefined : name === '' ? <div>Enter your name below first!</div> :

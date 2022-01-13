@@ -10,7 +10,7 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     },
     {
         id: 'world',
@@ -23,7 +23,7 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     },
     {
         id: 'hello',
@@ -36,7 +36,7 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     },
     {
         id: 'world',
@@ -49,7 +49,7 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     },
     {
         id: 'hello',
@@ -62,7 +62,7 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     },
     {
         id: 'world',
@@ -75,7 +75,7 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     },
     {
         id: 'hello',
@@ -88,7 +88,7 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     },
     {
         id: 'world',
@@ -101,6 +101,6 @@ export const SAMPLE_ROOMS = [
             row: 5,
             col: 5,
         },
-        creationTime: 'January 1'
+        creationTime: 'Jan 11, 11 PM'
     }
 ]

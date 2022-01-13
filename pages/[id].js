@@ -4,7 +4,7 @@ import {
     Input
 } from '@chakra-ui/react'
 import { Skeleton } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import useSWR, { useSWRConfig } from 'swr'
@@ -96,7 +96,7 @@ export default function Room() {
     const { data, error } = useSWR(`/api/rooms/room?id=${id}`, fetcher)
     const [password, setPassword] = useState('')
     const handlePasswordChange = (event) => setPassword(event.target.value)
-    const handleClick = async (row, col) => {
+    const handleClick = useCallback(async (row, col) => {
         mutate(`/api/rooms/room?id=${id}`, { ...data, occupied: [...data.occupied, { name: name, row: row, col: col }] }, false)
         let res = await fetch(`/api/rooms/room?id=${id}`, {
             method: "POST",
@@ -124,8 +124,9 @@ export default function Room() {
             setLocked(true)
             setLocation({ row, col })
         }
-    }
-    const handleExitSeat = async ({ row, col }) => {
+    },[id, name, data])
+    
+    const handleExitSeat = useCallback(async ({ row, col }) => {
         mutate(`/api/rooms/room?id=${id}`, { ...data, occupied: [...data.occupied.filter(occupied => !(occupied.row === row && occupied.col === col))] }, false)
         let res = await fetch(`/api/rooms/room?id=${id}`, {
             method: "POST",
@@ -150,8 +151,8 @@ export default function Room() {
             setLocked(false)
             setLocation({ row: -1, col: -1 })
         }
-    }
-    const handleClearSeat = async () => {
+    }, [id,data])
+    const handleClearSeat = useCallback(async () => {
         if (password.trim() === '') {
             toast({
                 title: `Please enter the room password`,
@@ -193,8 +194,8 @@ export default function Room() {
                 isClosable: true,
             })
         }
-    }
-    const handleDeleteRoom = async () => {
+    }, [id, password, data])
+    const handleDeleteRoom = useCallback(async () => {
         if (password.trim() === '') {
             toast({
                 title: `Please enter the room password`,
@@ -238,9 +239,8 @@ export default function Room() {
                 isClosable: true,
             })
         }
-    }
-
-    const handleRefresh = async () => {
+    }, [password, id])
+    const handleRefresh = useCallback(async () => {
         toast({
             title: `Fetched latest data`,
             status: 'success',
@@ -248,7 +248,7 @@ export default function Room() {
             isClosable: true,
         })
         mutate(`/api/rooms/room?id=${id}`)
-    }
+    }, [id])
 
     if (!data || error) {
         return DefaultPage
@@ -291,7 +291,7 @@ export default function Room() {
                     <div className="flex justify-center mb-10">
                         <div className="py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
                             <div className="grid gap-2 lg:gap-4">
-                                <FloorPlan data={data} gap={data.gap} handleClick={handleClick} name={name} locked={locked} />
+                                <FloorPlan data={data} gap={data.gap} handleClick={handleClick} name={name} locked={locked} location={location}/>
                             </div>
                         </div>
                     </div>
