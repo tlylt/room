@@ -12,6 +12,7 @@ import { useToast } from '@chakra-ui/react'
 import Footer from '../components/Footer'
 import FloorPlan from '../components/FloorPlan'
 import QRCode from 'qrcode.react'
+import { useLocalStorage } from '../lib/useLocalStorage'
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
@@ -85,11 +86,11 @@ const DefaultPage = (
     </>
 )
 export default function Room() {
+    const [name, setName] = useLocalStorage("name", "");
     const toast = useToast()
     const { mutate } = useSWRConfig()
     const router = useRouter()
     const { id } = router.query
-    const [name, setName] = useState('')
     const [locked, setLocked] = useState(false)
     const [location, setLocation] = useState({ row: -1, col: -1 })
     const handleNameChange = (event) => setName(event.target.value)
