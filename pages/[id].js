@@ -36,6 +36,7 @@ const DefaultPage = (
                     <span className="ml-3 text-xl">The Room</span>
                 </div>
                 <div className="inline-flex ml-5 lg:w-2/5 lg:justify-end lg:ml-0">
+                <div className="inline-flex items-center px-3 py-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Button onClick={()=>{}} variant="outline">Refresh</Button></div>
                     <a href="/" className="inline-flex items-center px-3 py-1 mt-4 text-base bg-gray-100 border-0 rounded focus:outline-none hover:bg-gray-200 md:mt-0">Back
                         <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
                             <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -290,7 +291,7 @@ export default function Room() {
                         <p className="w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300">Front</p>
                     </div>
                     <div className="flex justify-center mb-10">
-                        <div className="py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
+                        <div className="px-2 py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
                             <div className="grid gap-2 lg:gap-4">
                                 <FloorPlan data={data} gap={data.gap} handleClick={handleClick} name={name} locked={locked} location={location}/>
                             </div>
