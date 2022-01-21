@@ -31,7 +31,7 @@ export default async (req, res) => {
                     const room = req.body.room
                     const salt = bcrypt.genSaltSync(10);
                     const hash = bcrypt.hashSync(room.password, salt);
-                    const newRoom = { ...defaultRoom, password: hash, id: room.id, name: room.name }
+                    const newRoom = { ...defaultRoom, password: hash, id: room.id, name: room.name, row: room.row, col: room.col, gap: room.gap }
                     await db.collection('rooms').insertOne(newRoom);
                     res.status(200).json({ status: 'success', id: room.id });
                     break
@@ -40,6 +40,16 @@ export default async (req, res) => {
                     const correctPw = bcrypt.compareSync(req.body.room.password, roomPw.password)
                     if (correctPw) {
                         await db.collection('rooms').updateOne({ id: req.body.id }, { $set: { occupied: [] } })
+                        res.status(200).json({ status: 'success' });
+                    } else {
+                        res.status(401).json({ status: 'unauthorized' });
+                    }
+                    break
+                case 'kick':
+                    const roomPw3 = await db.collection('rooms').findOne({ id: req.body.id }, { projection: { password: 1 } })
+                    const correctPw3 = bcrypt.compareSync(req.body.room.password, roomPw3.password)
+                    if (correctPw3) {
+                        await db.collection('rooms').updateOne({ id: req.body.id }, { $pull: { occupied: { row: req.body.location.row, col: req.body.location.col } } })
                         res.status(200).json({ status: 'success' });
                     } else {
                         res.status(401).json({ status: 'unauthorized' });

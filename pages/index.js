@@ -2,7 +2,15 @@ import Head from 'next/head'
 import { useState } from 'react';
 import { Grid, _ } from 'gridjs-react';
 import "gridjs/dist/theme/mermaid.css";
-import { Input, Button } from '@chakra-ui/react'
+import {
+  Input, Button,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Stack,
+} from '@chakra-ui/react'
 import useSWR, { useSWRConfig } from 'swr'
 import { useRouter } from 'next/router';
 import { nanoid } from 'nanoid'
@@ -21,6 +29,14 @@ export default function Home() {
   const [roomName, setRoomName] = useState('')
   const handleNameChange = (event) => setRoomName(event.target.value)
   const [roomPassword, setRoomPassword] = useState('')
+  const [roomLayout, setRoomLayout] = useState({
+    row: 10,
+    col: 10,
+    gap: {
+      row: 5,
+      col: 5,
+    }
+  })
   const handlePasswordChange = (event) => setRoomPassword(event.target.value)
   const handleClick = async () => {
     if (roomName.trim() === '') {
@@ -52,7 +68,10 @@ export default function Home() {
         room: {
           name: roomName,
           id: id,
-          password: roomPassword
+          password: roomPassword,
+          row: roomLayout.row,
+          col: roomLayout.col,
+          gap: roomLayout.gap,
         }
       })
     });
@@ -238,6 +257,52 @@ export default function Home() {
                   required
                 />
                 <p className="text-sm leading-relaxed">*password is required to perform room admin actions</p>
+                <h2 className="my-3 font-medium text-gray-900 text-md title-font">Room Layout</h2>
+                <Stack shouldWrapChildren direction='row'>
+                  <div>
+                    <div>Row</div>
+                    <NumberInput size='xs' maxW={16} defaultValue={roomLayout.row} min={1} max={10}
+                      inputMode='numeric'
+                      value={roomLayout.row}
+                      onChange={(value) => setRoomLayout({ ...roomLayout, row: parseInt(value) })}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </div>
+                  <div>
+                    <div>Column</div>
+                    <NumberInput size='xs' maxW={16} defaultValue={roomLayout.col} min={1} max={10}
+                      value={roomLayout.col}
+                      inputMode='numeric'
+                      onChange={(value) => setRoomLayout({ ...roomLayout, col: parseInt(value) })}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </div>
+                  <div>
+                    <div>Vertical Gap</div>
+                    <NumberInput size='xs' maxW={16} defaultValue={roomLayout.gap.col} min={1}
+                      max={roomLayout.col}
+                      value={roomLayout.gap.col}
+                      inputMode='numeric'
+                      onChange={(value) => setRoomLayout({ ...roomLayout, gap: { ...roomLayout.gap, col: parseInt(value) } })}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </div>
+                </Stack>
                 <div className="inline-flex items-center mt-2 text-indigo-500"><Button variant="outline" onClick={handleClick}>GO</Button>
                 </div>
               </div>

@@ -1,7 +1,12 @@
 import { Box } from '@chakra-ui/react'
 import {
-    Button,
-    Input
+    Input, Button,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+    Stack,
 } from '@chakra-ui/react'
 import { Skeleton } from '@chakra-ui/react'
 import { useCallback, useState } from 'react'
@@ -36,7 +41,7 @@ const DefaultPage = (
                     <span className="ml-3 text-xl">The Room</span>
                 </div>
                 <div className="inline-flex ml-5 lg:w-2/5 lg:justify-end lg:ml-0">
-                <div className="inline-flex items-center px-3 py-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Button onClick={()=>{}} variant="outline">Refresh</Button></div>
+                    <div className="inline-flex items-center px-3 py-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Button onClick={() => { }} variant="outline">Refresh</Button></div>
                     <a href="/" className="inline-flex items-center px-3 py-1 mt-4 text-base bg-gray-100 border-0 rounded focus:outline-none hover:bg-gray-200 md:mt-0">Back
                         <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
                             <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -96,6 +101,10 @@ export default function Room() {
     const [location, setLocation] = useState({ row: -1, col: -1 })
     const handleNameChange = (event) => setName(event.target.value)
     const { data, error } = useSWR(`/api/rooms/room?id=${id}`, fetcher)
+    const [toRemove, setToRemove] = useState({
+        row: 1,
+        col: 1
+    })
     const [password, setPassword] = useState('')
     const handlePasswordChange = (event) => setPassword(event.target.value)
     const handleClick = useCallback(async (row, col) => {
@@ -126,8 +135,8 @@ export default function Room() {
             setLocked(true)
             setLocation({ row, col })
         }
-    },[id, name, data])
-    
+    }, [id, name, data])
+
     const handleExitSeat = useCallback(async ({ row, col }) => {
         mutate(`/api/rooms/room?id=${id}`, { ...data, occupied: [...data.occupied.filter(occupied => !(occupied.row === row && occupied.col === col))] }, false)
         let res = await fetch(`/api/rooms/room?id=${id}`, {
@@ -153,7 +162,51 @@ export default function Room() {
             setLocked(false)
             setLocation({ row: -1, col: -1 })
         }
-    }, [id,data])
+    }, [id, data])
+    const handleRemoveFromSeat = useCallback(async () => {
+        if (password.trim() === '') {
+            toast({
+                title: `Please enter the room password`,
+                status: 'warning',
+                position: 'top',
+                isClosable: true,
+            })
+            return
+        }
+        let res = await fetch(`/api/rooms`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                operation: 'kick',
+                id: id,
+                location: {
+                    row: toRemove.row - 1,
+                    col: toRemove.col - 1,
+                },
+                room: {
+                    password: password
+                }
+            })
+        })
+        if (res.status === 200) {
+            toast({
+                title: `Removed from seat`,
+                status: 'success',
+                position: 'top',
+                isClosable: true,
+            })
+            mutate(`/api/rooms/room?id=${id}`, { ...data, occupied: [...data.occupied.filter(occupied => !(occupied.row === toRemove.row - 1 && occupied.col === toRemove.col - 1))] }, false)
+        } else {
+            toast({
+                title: `Wrong password`,
+                status: 'error',
+                position: 'top',
+                isClosable: true,
+            })
+        }
+    }, [id, password, data, toRemove])
     const handleClearSeat = useCallback(async () => {
         if (password.trim() === '') {
             toast({
@@ -293,7 +346,7 @@ export default function Room() {
                     <div className="flex justify-center mb-10">
                         <div className="px-2 py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
                             <div className="grid gap-2 lg:gap-4">
-                                <FloorPlan data={data} gap={data.gap} handleClick={handleClick} name={name} locked={locked} location={location}/>
+                                <FloorPlan data={data} gap={data.gap} handleClick={handleClick} name={name} locked={locked} location={location} />
                             </div>
                         </div>
                     </div>
@@ -326,19 +379,52 @@ export default function Room() {
                         </div>
                         <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
                             <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Room Admin(s)</h2>
-                            <p className="mb-4 text-base leading-relaxed">Fill in the room password before executing the following actions</p>
+                            <p className="mb-4 text-base leading-relaxed">Fill in the room password before executing the actions</p>
                             <Input placeholder='Room Password'
                                 value={password}
                                 onChange={handlePasswordChange}
                                 type="password"
                                 required
                             />
-                            <div className="inline-flex items-center text-blue-500">
-                                <Button onClick={handleClearSeat} variant="outline">Clear all seats</Button>
+                            <div>Actions:</div>
+                            <Stack shouldWrapChildren direction='row' className="my-2">
+                                <div>
+                                    <div>Row</div>
+                                    <NumberInput size='xs' maxW={16} defaultValue={toRemove.row} min={1} max={data.row}
+                                        onChange={(value) => setToRemove({ ...toRemove, row: parseInt(value) })}
+                                        inputMode='numeric'
+                                    >
+                                        <NumberInputField />
+                                        <NumberInputStepper>
+                                            <NumberIncrementStepper />
+                                            <NumberDecrementStepper />
+                                        </NumberInputStepper>
+                                    </NumberInput>
+                                </div>
+                                <div>
+                                    <div>Column</div>
+                                    <NumberInput size='xs' maxW={16} defaultValue={toRemove.col} min={1} max={data.col}
+                                        onChange={(value) => setToRemove({ ...toRemove, col: parseInt(value) })}
+                                        inputMode='numeric'
+                                    >
+                                        <NumberInputField />
+                                        <NumberInputStepper>
+                                            <NumberIncrementStepper />
+                                            <NumberDecrementStepper />
+                                        </NumberInputStepper>
+                                    </NumberInput>
+                                </div>
+                            </Stack>
+                            <div className="inline-flex items-center my-1 text-blue-500">
+                                <Button onClick={handleRemoveFromSeat} variant="outline">Remove Occupant</Button>
                             </div>
-                            <div className="inline-flex items-center text-blue-500">
+                            <div className="inline-flex items-center my-1 text-blue-500">
+                                <Button onClick={handleClearSeat} variant="outline">Remove All Occupants</Button>
+                            </div>
+                            <div className="inline-flex items-center my-1 text-blue-500">
                                 <Button onClick={handleDeleteRoom} variant="outline">Delete Room</Button>
                             </div>
+
                         </div>
                     </div>
                 </div>
