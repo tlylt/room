@@ -43,7 +43,7 @@ function makeGrid(row, col, occupied) {
 }
 
 const initialGrid = defaultGrid()
-export default function FloorPlan({ data, gap, handleClick, name, locked, location }) {
+export default function FloorPlan({ data, gap, handleClick, name, locked, location, isRotated = false }) {
     const getBg = (row, col) => {
         if (location.row === row && location.col === col) {
             return 'teal.300'
@@ -66,7 +66,8 @@ export default function FloorPlan({ data, gap, handleClick, name, locked, locati
                             <div className={`${colIdx === gap.col ? 'pl-10' : ''}`}>
                                 {col.occupied ?
                                     <Tooltip label={col.name} hasArrow placement='auto'>
-                                        <Avatar textColor={'white'} name={col.name ? col.name : rowIdx + ' ' + colIdx} bg={getBg(rowIdx, colIdx)} >
+                                        <Avatar textColor={'white'} name={col.name ? col.name : rowIdx + ' ' + colIdx} bg={getBg(rowIdx, colIdx)}
+                                            className={`${isRotated ? "rotate-180" : ""}`}>
                                             <AvatarBadge boxSize='1.25em' bg='green.500' />
                                         </Avatar>
                                     </Tooltip> : <Avatar />}

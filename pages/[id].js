@@ -93,6 +93,7 @@ const DefaultPage = (
 )
 export default function Room() {
     const [name, setName] = useLocalStorage("name", "");
+    const [isRotated, setIsRotated] = useState(false)
     const toast = useToast()
     const { mutate } = useSWRConfig()
     const router = useRouter()
@@ -340,18 +341,20 @@ export default function Room() {
             </header>
             <section className="text-gray-600">
                 <div className="container px-5 py-4 mx-auto">
-                    <div className="flex flex-col w-full mb-10 text-center">
-                        <p className="w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300">Front</p>
-                    </div>
-                    <div className="flex justify-center mb-10">
-                        <div className="px-2 py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
-                            <div className="grid gap-2 lg:gap-4">
-                                <FloorPlan data={data} gap={data.gap} handleClick={handleClick} name={name} locked={locked} location={location} />
+                    <div className={`${isRotated ? "rotate-180" : ""}`}>
+                        <div className="flex flex-col w-full mb-10 text-center">
+                            <p className={`${isRotated ? "rotate-180" : ""} w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300`}>Front</p>
+                        </div>
+                        <div className="flex justify-center mb-10">
+                            <div className="px-2 py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
+                                <div className="grid gap-2 lg:gap-4">
+                                    <FloorPlan data={data} gap={data.gap} handleClick={handleClick} name={name} locked={locked} location={location} isRotated={isRotated} />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="flex flex-col w-full mb-20 text-center">
-                        <p className="w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300">Back</p>
+                        <div className="flex flex-col w-full mb-20 text-center">
+                            <p className={`${isRotated ? "rotate-180" : ""} w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300`}>Back</p>
+                        </div>
                     </div>
                     <div className="flex flex-wrap">
                         <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
@@ -424,7 +427,9 @@ export default function Room() {
                             <div className="inline-flex items-center my-1 text-blue-500">
                                 <Button onClick={handleDeleteRoom} variant="outline">Delete Room</Button>
                             </div>
-
+                            <div className="flex items-center my-1 text-blue-500">
+                                <Button onClick={() => { setIsRotated(prev => !prev) }} variant="outline">Rotate View</Button>
+                            </div>
                         </div>
                     </div>
                 </div>
