@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import {
     Input, Button,
     NumberInput,
@@ -302,6 +302,7 @@ export default function Room() {
             status: 'success',
             position: 'top',
             isClosable: true,
+            duration: 1000,
         })
         mutate(`/api/rooms/room?id=${id}`)
     }, [id])
@@ -330,7 +331,7 @@ export default function Room() {
                     </div>
 
                     <div className="inline-flex ml-5 lg:w-2/5 lg:justify-end lg:ml-0">
-                        <div className="inline-flex items-center px-3 py-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none md:mt-0" ><Button onClick={handleRefresh} variant="outline">Refresh</Button></div>
+                        <div className="inline-flex items-center px-3 py-1 mt-4 text-base text-blue-600 border-0 rounded focus:outline-none md:mt-0" ><Button onClick={handleRefresh} variant="outline">Refresh</Button></div>
                         <a href="/" className="inline-flex items-center px-3 py-1 mt-4 text-base text-blue-500 border-0 rounded focus:outline-none hover:bg-gray-100 md:mt-0">Back
                             <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
                                 <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -343,7 +344,7 @@ export default function Room() {
                 <div className="container px-5 py-4 mx-auto">
                     <div className={`${isRotated ? "rotate-180" : ""}`}>
                         <div className="flex flex-col w-full mb-10 text-center">
-                            <p className={`${isRotated ? "rotate-180" : ""} w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300`}>Front</p>
+                            <p className={`${isRotated ? "rotate-180" : ""} w-2/3 mx-auto text-gray-900 bg-slate-300 font-semibold`}>Front</p>
                         </div>
                         <div className="flex justify-center mb-10">
                             <div className="px-2 py-2 mb-10 overflow-x-auto rounded-lg lg:mb-0">
@@ -353,12 +354,13 @@ export default function Room() {
                             </div>
                         </div>
                         <div className="flex flex-col w-full mb-20 text-center">
-                            <p className={`${isRotated ? "rotate-180" : ""} w-2/3 mx-auto text-base leading-relaxed text-gray-900 bg-slate-300`}>Back</p>
+                            <p className={`${isRotated ? "rotate-180" : ""} w-2/3 mx-auto text-gray-900 bg-slate-300 font-semibold`}>Back</p>
                         </div>
                     </div>
                     <div className="flex flex-wrap">
-                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
-                            <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Settings</h2>
+                        <div className="px-8 py-6 border-l-2 border-gray-200 lg:border-0 xl:w-1/3 lg:w-1/2 md:w-full border-opacity-60">
+                            <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Profile</h2>
+                            <Text mb='8px'>Name:</Text>
                             <Input placeholder='Enter Name'
                                 value={name}
                                 onChange={handleNameChange}
@@ -366,22 +368,25 @@ export default function Room() {
                                 required
                             />
                         </div>
-                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
+                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/3 lg:w-1/2 md:w-full border-opacity-60">
                             <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Actions</h2>
-                            {location.row === -1 && location.col === -1 ? <div className="mb-4 text-base leading-relaxed">Go sit down!</div> :
+                            {location.row === -1 && location.col === -1 ? <div className="mb-4 text-base leading-relaxed">🪑 Go sit down!</div> :
                                 <div className="mb-4 text-base leading-relaxed">
-                                    <div>Sitting at: </div>
-                                    <div>Row: {location.row + 1}</div>
-                                    <div>Column: {location.col + 1}</div>
+                                    <div>🧘‍♀️ Now at: </div>
+                                    <span>Row: {location.row + 1} </span>
+                                    <span>Column: {location.col + 1}</span>
                                     <div className="text-blue-500">
                                         <Button onClick={() => handleExitSeat(location)} disabled={!locked} variant="outline">Exit Seat</Button>
                                     </div>
                                 </div>}
                             <div>Share:</div>
-                            <QRCode value={`${window.location.href}`} />
+                            <QRCode value={`${window.location.href}`} size={250} />
                         </div>
-                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/4 lg:w-1/2 md:w-full border-opacity-60">
-                            <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Room Admin(s)</h2>
+                        <div className="px-8 py-6 border-l-2 border-gray-200 xl:w-1/3 lg:w-1/2 md:w-full border-opacity-60">
+                            <h2 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl title-font">Room Admin</h2>
+                            <div className="flex items-center my-1 text-blue-500">
+                                <Button onClick={() => { setIsRotated(prev => !prev) }} variant="outline">Rotate View</Button>
+                            </div>
                             <p className="mb-4 text-base leading-relaxed">Fill in the room password before executing the actions</p>
                             <Input placeholder='Room Password'
                                 value={password}
@@ -418,17 +423,14 @@ export default function Room() {
                                     </NumberInput>
                                 </div>
                             </Stack>
-                            <div className="inline-flex items-center my-1 text-blue-500">
+                            <div className="flex items-center my-1 text-red-500">
                                 <Button onClick={handleRemoveFromSeat} variant="outline">Remove Occupant</Button>
                             </div>
-                            <div className="inline-flex items-center my-1 text-blue-500">
+                            <div className="flex items-center my-1 text-red-500">
                                 <Button onClick={handleClearSeat} variant="outline">Remove All Occupants</Button>
                             </div>
-                            <div className="inline-flex items-center my-1 text-blue-500">
+                            <div className="flex items-center my-1 text-red-500">
                                 <Button onClick={handleDeleteRoom} variant="outline">Delete Room</Button>
-                            </div>
-                            <div className="flex items-center my-1 text-blue-500">
-                                <Button onClick={() => { setIsRotated(prev => !prev) }} variant="outline">Rotate View</Button>
                             </div>
                         </div>
                     </div>
